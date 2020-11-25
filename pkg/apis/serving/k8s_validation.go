@@ -383,13 +383,6 @@ func ValidateContainer(ctx context.Context, container corev1.Container, volumes 
 }
 
 func portValidation(containerPorts []corev1.ContainerPort) *apis.FieldError {
-	if len(containerPorts) > 1 {
-		return &apis.FieldError{
-			Message: "More than one container port is set",
-			Paths:   []string{apis.CurrentField},
-			Details: "Only a single port is allowed",
-		}
-	}
 	return nil
 }
 
