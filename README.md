@@ -28,3 +28,16 @@ repository.
 
 If you are interested in contributing, see [CONTRIBUTING.md](./CONTRIBUTING.md)
 and [DEVELOPMENT.md](./DEVELOPMENT.md).
+
+## Multiport Patch
+
+The validation and deployment logic has been updated to allow for serving pods exposing 
+multiple ports.
+
+Artifacts for hte patched version have been build using:
+
+~~~bash
+<GOPATH>/src/knative.dev/serving/hack/release.sh --version 0.19.0 --publish --release-dir release --release-gcr <DOCKER_REGISTRY>/knative-patched --tag-release --skip-tests
+~~~
+
+The K8s resource manifest for deploying the patched version are available in the corresponding release.
