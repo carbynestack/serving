@@ -33,6 +33,13 @@ Modifications to the original Knative Serving source code are open-sourced under
 the same Apache License 2.0 as Knative Serving itself. See the [LICENSE](LICENSE) 
 file for details.
 
+### 3rd Party Licenses
+
+For information on how license obligations for 3rd party OSS dependencies are
+handled in a legally compliant way see the
+[README](https://github.com/carbynestack/carbynestack) file of the Carbyne Stack
+repository.
+
 ## Contributing
 
 Please see the Carbyne Stack
