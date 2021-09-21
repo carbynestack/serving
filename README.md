@@ -1,7 +1,7 @@
 # Carbyne Stack Knative Serving Multiport Patch
 
-This repository is a fork of the [Knative Serving](https://github.com/knative/serving) 
-repository. The provisioning and validation logic has been tweaked to support 
+This repository is a fork of the [Knative Serving](https://github.com/knative/serving)
+repository. The provisioning and validation logic has been tweaked to support
 application pods that expose multiple ports simultaneously.
 
 ## Releasing
@@ -9,9 +9,9 @@ application pods that expose multiple ports simultaneously.
 > **NOTE**: The following requires the [GitHub CLI](https://cli.github.com/) as
 > a prerequisite.
 
-The following snippet builds and publishes the patched Knative Serving Docker 
-images on the GitHub Docker Registry and creates a release with the K8s resource 
-manifests required for deploying the patched version of Knative Serving: 
+The following snippet builds and publishes the patched Knative Serving Docker
+images on the GitHub Docker Registry and creates a release with the K8s resource
+manifests required for deploying the patched version of Knative Serving:
 
 ~~~bash
 export RELEASE_FOLDER="$(pwd)/release"
@@ -29,16 +29,15 @@ gh release create v${VERSION}-multiport-patch -n "" -p -t "Multiport Patch v${VE
 
 ## License
 
-Modifications to the original Knative Serving source code are open-sourced under 
-the same Apache License 2.0 as Knative Serving itself. See the [LICENSE](LICENSE) 
+Modifications to the original Knative Serving source code are open-sourced under
+the same Apache License 2.0 as Knative Serving itself. See the [LICENSE](LICENSE)
 file for details.
 
 ### 3rd Party Licenses
 
 For information on how license obligations for 3rd party OSS dependencies are
-handled in a legally compliant way see the
-[README](https://github.com/carbynestack/carbynestack) file of the Carbyne Stack
-repository.
+fulfilled see the [README](https://github.com/carbynestack/carbynestack) file of
+the Carbyne Stack repository.
 
 ## Contributing
 
