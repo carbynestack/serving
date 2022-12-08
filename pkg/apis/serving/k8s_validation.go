@@ -455,15 +455,6 @@ func validateContainersPorts(containers []corev1.Container) (corev1.ContainerPor
 		return port, apis.ErrMissingField("ports")
 	}
 
-	// More than one container sections have ports.
-	if count > 1 {
-		return port, &apis.FieldError{
-			Message: "more than one container port is set",
-			Paths:   []string{"ports"},
-			Details: "Only a single port is allowed across all containers",
-		}
-	}
-
 	return port, nil
 }
 
