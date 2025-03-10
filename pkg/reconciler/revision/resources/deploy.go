@@ -286,7 +286,7 @@ func makeServingContainer(servingContainer corev1.Container, rev *v1.Revision) c
 	userPort := getUserPort(rev)
 	userPortStr := strconv.Itoa(int(userPort))
 	// Replacement is safe as only up to a single port is allowed on the Revision
-	servingContainer.Ports = buildContainerPorts(userPort)
+	servingContainer.Ports = getContainerPorts(rev)
 	servingContainer.Env = append(servingContainer.Env, buildUserPortEnv(userPortStr))
 	container := makeContainer(servingContainer, rev)
 	// If the user provides a liveness probe, we should rewrite in the port on the user-container for them.
@@ -320,6 +320,27 @@ func buildContainerPorts(userPort int32) []corev1.ContainerPort {
 	return []corev1.ContainerPort{{
 		Name:          v1.UserPortName,
 		ContainerPort: userPort,
+	}}
+}
+
+func getContainerPorts(rev *v1.Revision) []corev1.ContainerPort {
+	if len(rev.Spec.GetContainer().Ports) == 1 {
+		return []corev1.ContainerPort{{
+			Name:          v1.UserPortName,
+			ContainerPort: rev.Spec.GetContainer().Ports[0].ContainerPort,
+		}}
+	} else if len(rev.Spec.GetContainer().Ports) > 1 {
+		// take the first one as it is with only replacing the name.
+		ports := []corev1.ContainerPort{{
+			Name:          v1.UserPortName,
+			ContainerPort: rev.Spec.GetContainer().Ports[0].ContainerPort,
+		}}
+		ports = append(ports, rev.Spec.GetContainer().Ports[1:]...)
+		return ports
+	}
+	return []corev1.ContainerPort{{
+		Name:          v1.UserPortName,
+		ContainerPort: v1.DefaultUserPort,
 	}}
 }
 

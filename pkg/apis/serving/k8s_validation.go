@@ -472,8 +472,7 @@ func AllMountedVolumes(containers []corev1.Container) sets.Set[string] {
 	return volumeNames
 }
 
-// validateContainersPorts validates that the expected number of container ports are present
-// and returns the single serving port if error is nil.
+// validateContainersPorts validates the container ports.
 func validateContainersPorts(containers []corev1.Container) (corev1.ContainerPort, *apis.FieldError) {
 	var count int
 	var port corev1.ContainerPort
@@ -495,15 +494,6 @@ func validateContainersPorts(containers []corev1.Container) (corev1.ContainerPor
 	// When no container ports are specified.
 	if count == 0 && len(containers) > 1 {
 		return port, apis.ErrMissingField("ports")
-	}
-
-	// More than one container sections have ports.
-	if count > 1 {
-		return port, &apis.FieldError{
-			Message: "more than one container port is set",
-			Paths:   []string{"ports"},
-			Details: "Only a single port is allowed across all containers",
-		}
 	}
 
 	return port, nil

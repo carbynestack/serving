@@ -1,32 +1,45 @@
-# Knative Serving
+# Carbyne Stack Knative Serving Multiport Patch
 
-[![go.dev reference](https://img.shields.io/badge/go.dev-reference-007d9c?logo=go&logoColor=white)](https://pkg.go.dev/github.com/knative/serving)
-[![Go Report Card](https://goreportcard.com/badge/knative/serving)](https://goreportcard.com/report/knative/serving)
-[![Releases](https://img.shields.io/github/release-pre/knative/serving.svg?sort=semver)](https://github.com/knative/serving/releases)
-[![LICENSE](https://img.shields.io/github/license/knative/serving.svg)](https://github.com/knative/serving/blob/main/LICENSE)
-[![Slack Status](https://img.shields.io/badge/slack-join_chat-white.svg?logo=slack&style=social)](https://cloud-native.slack.com/archives/C04LGHDR9K7)
-[![codecov](https://codecov.io/gh/knative/serving/branch/main/graph/badge.svg)](https://codecov.io/gh/knative/serving)
-[![CII Best Practices](https://bestpractices.coreinfrastructure.org/projects/5913/badge)](https://bestpractices.coreinfrastructure.org/projects/5913)
+This repository is a fork of the [Knative Serving](https://github.com/knative/serving)
+repository. The provisioning and validation logic has been tweaked to support
+application pods that expose multiple ports simultaneously.
 
-Knative Serving builds on Kubernetes to support deploying and serving of
-applications and functions as serverless containers. Serving is easy to get
-started with and scales to support advanced scenarios.
+## Releasing
 
-The Knative Serving project provides middleware primitives that enable:
+> **NOTE**: The following requires the [GitHub CLI](https://cli.github.com/) as
+> a prerequisite.
 
-- Rapid deployment of serverless containers
-- Automatic scaling up and down to zero
-- Routing and network programming
-- Point-in-time snapshots of deployed code and configurations
+The following snippet builds and publishes the patched Knative Serving Docker
+images on the GitHub Docker Registry and creates a release with the K8s resource
+manifests required for deploying the patched version of Knative Serving:
 
-For documentation on using Knative Serving, see the
-[serving section](https://www.knative.dev/docs/serving/) of the
-[Knative documentation site](https://www.knative.dev/docs).
+~~~bash
+export RELEASE_FOLDER="$(pwd)/release"
+export VERSION=1.17.0
+sed -i 's/cp "${ARTIFACTS_TO_PUBLISH}"/cp ${ARTIFACTS_TO_PUBLISH}/g' vendor/knative.dev/hack/release.sh
+hack/release.sh \
+  --version ${VERSION} \
+  --publish \
+  --release-dir "${RELEASE_FOLDER}" \
+  --release-gcr ghcr.io/carbynestack/serving \
+  --tag-release \
+  --skip-tests
+gh release create v${VERSION}-multiport-patch -n "" -p -t "Multiport Patch v${VERSION}" -R carbynestack/serving ${RELEASE_FOLDER}/*.yaml
+~~~
 
-For documentation on the Knative Serving specification, see the
-[docs](https://github.com/knative/serving/tree/main/docs) folder of this
-repository.
+## License
 
-If you are interested in contributing, see [CONTRIBUTING.md](./CONTRIBUTING.md)
-and [DEVELOPMENT.md](./DEVELOPMENT.md). For a list of all help wanted issues
-across Knative, take a look at [CLOTRIBUTOR](https://clotributor.dev/search?project=knative&page=1).
+Modifications to the original Knative Serving source code are open-sourced under
+the same Apache License 2.0 as Knative Serving itself. See the [LICENSE](LICENSE)
+file for details.
+
+### 3rd Party Licenses
+
+For information on how license obligations for 3rd party OSS dependencies are
+fulfilled see the [README](https://github.com/carbynestack/carbynestack) file of
+the Carbyne Stack repository.
+
+## Contributing
+
+Please see the Carbyne Stack
+[Contributor's Guide](https://github.com/carbynestack/carbynestack/blob/master/CONTRIBUTING.md).
